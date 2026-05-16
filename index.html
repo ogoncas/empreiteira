@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanguard Engenharia | Empreiteira</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1a1a1a;
+            --surface-light: #242424;
+            --text-main: #f4f4f4;
+            --text-muted: #a0a0a0;
+            --accent-color: #d4af37;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .section-padding { padding: 100px 50px; max-width: 1400px; margin: 0 auto; }
+        
+        .section-title {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background-color: var(--accent-color);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover { color: var(--bg-color); }
+        .btn:hover::before { left: 0; }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: padding 0.3s ease;
+        }
+
+        nav.scrolled { padding: 15px 50px; box-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+
+        .logo { font-family: var(--font-heading); font-size: 1.5rem; color: var(--accent-color); letter-spacing: 2px; }
+
+        .nav-links a {
+            color: var(--text-main); text-decoration: none;
+            margin-left: 30px; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 1px;
+            position: relative; transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute;
+            width: 0; height: 1px;
+            bottom: -5px; left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1541888081691-1cb18809623e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-heading); font-size: 4rem; margin-bottom: 20px;
+            opacity: 0; transform: translateY(30px); animation: fadeUp 1s forwards 0.5s;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px auto;
+            opacity: 0; transform: translateY(30px); animation: fadeUp 1s forwards 0.8s;
+        }
+        
+        .hero .btn { opacity: 0; animation: fadeUp 1s forwards 1.1s; }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h2 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 10px; color: var(--accent-color); }
+        .about-text h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 20px; color: var(--text-main); font-weight: 400; }
+        .about-text p { color: var(--text-muted); margin-bottom: 20px; }
+
+        .stats {
+            display: flex; gap: 40px; margin-top: 40px;
+            padding-top: 30px; border-top: 1px solid var(--surface-light);
+        }
+
+        .stat-item h4 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--accent-color); }
+        .stat-item span { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+
+        .about-img img { width: 100%; border-radius: 4px; box-shadow: 20px 20px 0px var(--surface-light); }
+
+        .services { background-color: var(--surface-color); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .service-card {
+            background: var(--bg-color); padding: 50px 35px; border-radius: 4px;
+            border-bottom: 3px solid transparent; transition: all 0.3s ease;
+        }
+
+        .service-card:hover { transform: translateY(-10px); border-bottom: 3px solid var(--accent-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .service-icon { font-size: 2.5rem; color: var(--accent-color); margin-bottom: 25px; transition: transform 0.3s ease; }
+        .service-card:hover .service-icon { transform: scale(1.1); }
+        
+        .service-card h3 { font-family: var(--font-heading); margin-bottom: 15px; font-size: 1.4rem; font-weight: 400; }
+        .service-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .project-card { position: relative; height: 450px; overflow: hidden; border-radius: 4px; cursor: pointer; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        
+        .project-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            transform: translateY(20px); opacity: 0; transition: all 0.4s ease;
+        }
+
+        .project-info h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 5px; }
+        .project-info p { color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .project-card:hover .project-img { transform: scale(1.08); }
+        .project-card:hover .project-info { transform: translateY(0); opacity: 1; }
+
+        .contact { background-color: var(--surface-color); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+        .contact-info h3 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 20px; font-weight: 400; }
+        .contact-info p { color: var(--text-muted); margin-bottom: 40px; }
+
+        .info-item { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
+        .info-item i { font-size: 1.2rem; color: var(--accent-color); margin-top: 5px; }
+        .info-item h4 { color: var(--text-main); font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
+        .info-item p { color: var(--text-muted); }
+
+        .contact-form { display: flex; flex-direction: column; gap: 25px; }
+        
+        .form-group { position: relative; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px 0; background: transparent; border: none;
+            border-bottom: 1px solid var(--surface-light); color: var(--text-main);
+            font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-bottom-color: var(--accent-color); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        footer { background-color: #0a0a0a; padding: 40px 50px; text-align: center; border-top: 1px solid var(--surface-light); }
+        footer p { color: var(--text-muted); font-size: 0.9rem; }
+        footer .accent { color: var(--accent-color); font-family: var(--font-heading); font-size: 1.1rem; }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+            .about-img img { box-shadow: 10px 10px 0px var(--surface-light); }
+            .stats { flex-direction: column; gap: 20px; text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            nav { padding: 15px; flex-direction: column; gap: 15px; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .nav-links a { margin: 0 10px; }
+            .section-padding { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">VANGUARD</div>
+        <div class="nav-links">
+            <a href="#home">Início</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#servicos">Atuação</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#contato">Contato</a>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>Excelência em Grandes Obras</h1>
+            <p>Engenharia de precisão e gestão rigorosa para transformar projetos de alta complexidade em realidade.</p>
+            <a href="#projetos" class="btn">Explorar Portfólio</a>
+        </div>
+    </header>
+
+    <section class="section-padding" id="sobre">
+        <div class="about-grid">
+            <div class="about-text reveal">
+                <h2 class="section-title" style="text-align: left;">Tradição & Inovação</h2>
+                <h3>Construindo o futuro com solidez.</h3>
+                <p>A Vanguard Engenharia atua há mais de duas décadas na execução de obras de médio e grande porte. Nosso compromisso é entregar excelência através de um rigoroso controle de qualidade, cumprimento de prazos e respeito ao meio ambiente.</p>
+                <p>Combinamos técnicas construtivas tradicionais com as mais recentes inovações tecnológicas do setor, garantindo segurança e eficiência em cada etapa do projeto.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <h4>25+</h4>
+                        <span>Anos de Experiência</span>
+                    </div>
+                    <div class="stat-item">
+                        <h4>150+</h4>
+                        <span>Obras Entregues</span>
+                    </div>
+                    <div class="stat-item">
+                        <h4>2M+</h4>
+                        <span>m² Construídos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-img reveal" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Engenheiros na obra">
+            </div>
+        </div>
+    </section>
+
+    <section class="services section-padding" id="servicos">
+        <h2 class="section-title reveal">Áreas de Atuação</h2>
+        <p class="section-subtitle reveal">Expertise técnica para diferentes demandas do setor da construção civil.</p>
+        
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fa-solid fa-trowel-bricks"></i></div>
+                <h3>Infraestrutura</h3>
+                <p>Obras de arte especiais, pontes, viadutos e terraplenagem de alta complexidade urbana e rodoviária.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay: 0.2s;">
+                <div class="service-icon"><i class="fa-solid fa-building"></i></div>
+                <h3>Edificações Comerciais</h3>
+                <p>Torres corporativas de alto padrão, hotéis e centros empresariais construídos com engenharia de ponta.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay: 0.4s;">
+                <div class="service-icon"><i class="fa-solid fa-industry"></i></div>
+                <h3>Galpões Industriais</h3>
+                <p>Estruturas logísticas e complexos fabris planejados para máxima otimização espacial e durabilidade estrutural.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="projetos">
+        <h2 class="section-title reveal">Projetos de Destaque</h2>
+        <p class="section-subtitle reveal">Nosso portfólio reflete a capacidade técnica e o alto padrão de entrega Vanguard.</p>
+        
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Edifício Corporativo" class="project-img">
+                <div class="project-info">
+                    <h3>Torre Horizonte</h3>
+                    <p>Edificação Comercial - 45 Andares</p>
+                </div>
+            </div>
+            <div class="project-card reveal" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Estrutura Industrial" class="project-img">
+                <div class="project-info">
+                    <h3>Complexo Industrial Nexus</h3>
+                    <p>Infraestrutura Logística</p>
+                </div>
+            </div>
+            <div class="project-card reveal" style="transition-delay: 0.4s;">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ponte e Infraestrutura" class="project-img">
+                <div class="project-info">
+                    <h3>Viaduto Metropolitano</h3>
+                    <p>Obra de Arte Especial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact section-padding" id="contato">
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3>Inicie seu projeto conosco</h3>
+                <p>Nossa equipe de engenheiros e diretores está pronta para analisar e viabilizar as necessidades técnicas da sua próxima obra.</p>
+                
+                <div class="info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h4>Endereço Corporativo</h4>
+                        <p>Av. Faria Lima, 3000, 15º Andar - São Paulo, SP</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <div>
+                        <h4>Contato Direto</h4>
+                        <p>+55 (11) 4000-0000<br>comercial@vanguardengenharia.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form class="contact-form reveal" style="transition-delay: 0.2s;">
+                <div class="form-group">
+                    <input type="text" placeholder="Nome da Empresa / Contato" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="E-mail Profissional" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Assunto (Ex: Cotação para Galpão Logístico)" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Detalhes do projeto ou mensagem..." required></textarea>
+                </div>
+                <button type="button" class="btn" style="align-self: flex-start;">Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 <span class="accent">VANGUARD</span> Engenharia. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        };
+        const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
