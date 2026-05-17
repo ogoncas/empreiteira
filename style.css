@@ -1,0 +1,454 @@
+/* ==========================================================================
+   VARIÁVEIS GLOBAIS (Custom Properties)
+   Centralizam a paleta de cores e tipografia, facilitando futuras alterações.
+   ========================================================================== */
+:root {
+    --bg-color: #121212;         /* Fundo escuro principal */
+    --surface-color: #1a1a1a;    /* Fundo secundário para seções alternadas */
+    --surface-light: #242424;    /* Bordas e divisores sutis */
+    --text-main: #f4f4f4;        /* Texto principal (claro) */
+    --text-muted: #a0a0a0;       /* Texto secundário/descrições (cinza) */
+    --accent-color: #d4af37;     /* Cor de destaque (dourado) */
+    
+    --font-heading: 'Playfair Display', serif; /* Fonte elegante para títulos */
+    --font-body: 'Montserrat', sans-serif;     /* Fonte moderna e limpa para parágrafos */
+}
+
+/* ==========================================================================
+   RESET CSS BASE
+   Remove o comportamento padrão dos navegadores para garantir uniformidade.
+   ========================================================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; /* O padding e a borda não aumentam o tamanho final do elemento */
+}
+
+html { 
+    scroll-behavior: smooth; /* Permite a rolagem suave ao clicar nas âncoras do menu */
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
+}
+
+/* ==========================================================================
+   ESTILOS DE ESTRUTURA GERAL E COMPONENTES
+   Classes reaproveitáveis ao longo do projeto.
+   ========================================================================== */
+.section-padding { 
+    padding: 100px 50px; 
+    max-width: 1400px; 
+    margin: 0 auto; 
+}
+
+.section-title {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 60px auto;
+    font-size: 1rem;
+}
+
+/* Botão Estilizado com Efeito Hover Preenchido */
+.btn {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease;
+    cursor: pointer;
+    background: transparent;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: -100%; /* Começa fora do botão à esquerda */
+    width: 100%; 
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: left 0.4s ease;
+    z-index: -1; /* Fica atrás do texto do botão */
+}
+
+.btn:hover { color: var(--bg-color); }
+.btn:hover::before { left: 0; } /* Desliza a cor para dentro do botão no hover */
+
+/* ==========================================================================
+   NAVEGAÇÃO (HEADER & MENU)
+   ========================================================================== */
+nav {
+    position: fixed; 
+    top: 0; 
+    width: 100%;
+    padding: 20px 50px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px); /* Efeito de vidro fosco (Glassmorphism) */
+    z-index: 1000; /* Garante que fique acima de todos os outros elementos */
+    transition: padding 0.3s ease;
+}
+
+/* Classe dinâmica adicionada via JavaScript ao rolar a página */
+nav.scrolled { 
+    padding: 15px 50px; 
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5); 
+}
+
+.logo { 
+    font-family: var(--font-heading); 
+    font-size: 1.5rem; 
+    color: var(--accent-color); 
+    letter-spacing: 2px; 
+    z-index: 1001; /* Mantém a logo acima do overlay do menu mobile */
+}
+
+/* Ícone do Menu Hambúrguer - Oculto por padrão no Desktop */
+.menu-toggle {
+    display: none; 
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 1001; 
+}
+
+/* Linhas do menu hambúrguer */
+.menu-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: left center; /* Define o eixo da animação do 'X' */
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo dos links com sublinhado animado */
+.nav-links a {
+    color: var(--text-main); 
+    text-decoration: none;
+    margin-left: 30px; 
+    font-size: 0.9rem;
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    position: relative; 
+    transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+    content: ''; 
+    position: absolute;
+    width: 0; /* Começa invisível */
+    height: 1px;
+    bottom: -5px; 
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--accent-color); }
+.nav-links a:hover::after { width: 100%; } /* Expande o sublinhado ao passar o mouse */
+
+/* ==========================================================================
+   SEÇÃO HERO (PRIMEIRA DOBRA)
+   ========================================================================== */
+.hero {
+    height: 100vh; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    /* Fundo com sobreposição de gradiente escuro para garantir legibilidade do texto */
+    background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1541888081691-1cb18809623e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+    padding: 0 20px;
+}
+
+/* Animações de entrada controladas por Keyframes (veja no final do arquivo) */
+.hero-content h1 {
+    font-family: var(--font-heading); 
+    font-size: 4rem; 
+    margin-bottom: 20px;
+    opacity: 0; 
+    transform: translateY(30px); 
+    animation: fadeUp 1s forwards 0.5s;
+}
+
+.hero-content p {
+    font-size: 1.2rem; 
+    color: var(--text-muted); 
+    max-width: 600px; 
+    margin: 0 auto 40px auto;
+    opacity: 0; 
+    transform: translateY(30px); 
+    animation: fadeUp 1s forwards 0.8s;
+}
+
+.hero .btn { 
+    opacity: 0; 
+    animation: fadeUp 1s forwards 1.1s; 
+}
+
+/* ==========================================================================
+   SEÇÃO: SOBRE
+   ========================================================================== */
+.about-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas iguais */
+    gap: 60px; 
+    align-items: center; 
+}
+
+.about-text h2 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 10px; color: var(--accent-color); }
+.about-text h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 20px; color: var(--text-main); font-weight: 400; }
+.about-text p { color: var(--text-muted); margin-bottom: 20px; }
+
+/* Grid flexível para exibir os números de estatísticas alinhados */
+.stats { 
+    display: flex; 
+    gap: 40px; 
+    margin-top: 40px; 
+    padding-top: 30px; 
+    border-top: 1px solid var(--surface-light); 
+}
+.stat-item h4 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--accent-color); }
+.stat-item span { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+
+/* Sombra sólida geométrica aplicada à imagem */
+.about-img img { 
+    width: 100%; 
+    border-radius: 4px; 
+    box-shadow: 20px 20px 0px var(--surface-light); 
+}
+
+/* ==========================================================================
+   SEÇÃO: SERVIÇOS
+   ========================================================================== */
+.services { background-color: var(--surface-color); }
+
+/* Grid dinâmico: Ajusta as colunas automaticamente conforme o espaço disponível */
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+.service-card {
+    background: var(--bg-color); 
+    padding: 50px 35px; 
+    border-radius: 4px;
+    border-bottom: 3px solid transparent; 
+    transition: all 0.3s ease;
+}
+
+/* Efeito de elevação do card ao passar o mouse */
+.service-card:hover { 
+    transform: translateY(-10px); 
+    border-bottom: 3px solid var(--accent-color); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+}
+
+.service-icon { 
+    font-size: 2.5rem; 
+    color: var(--accent-color); 
+    margin-bottom: 25px; 
+    transition: transform 0.3s ease; 
+}
+
+.service-card:hover .service-icon { transform: scale(1.1); }
+.service-card h3 { font-family: var(--font-heading); margin-bottom: 15px; font-size: 1.4rem; font-weight: 400; }
+.service-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+/* ==========================================================================
+   SEÇÃO: PROJETOS (PORTFÓLIO)
+   ========================================================================== */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+
+.project-card { 
+    position: relative; 
+    height: 450px; 
+    overflow: hidden; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+.project-img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+}
+
+/* Overlay de informações que sobe ao dar hover na imagem */
+.project-info {
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    padding: 30px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.95));
+    transform: translateY(20px); 
+    opacity: 0; 
+    transition: all 0.4s ease;
+}
+
+.project-info h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 5px; }
+.project-info p { color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Efeito Hover do Card Inteiro */
+.project-card:hover .project-img { transform: scale(1.08); } /* Zoom lento na imagem */
+.project-card:hover .project-info { transform: translateY(0); opacity: 1; } /* Exibe o texto */
+
+/* ==========================================================================
+   SEÇÃO: CONTATO E FORMULÁRIO
+   ========================================================================== */
+.contact { background-color: var(--surface-color); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+.contact-info h3 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 20px; font-weight: 400; }
+.contact-info p { color: var(--text-muted); margin-bottom: 40px; }
+
+.info-item { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
+.info-item i { font-size: 1.2rem; color: var(--accent-color); margin-top: 5px; }
+.info-item h4 { color: var(--text-main); font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
+.info-item p { color: var(--text-muted); }
+
+/* Layout do Formulário */
+.contact-form { display: flex; flex-direction: column; gap: 25px; }
+.form-group { position: relative; }
+
+/* Estilização limpa dos inputs: apenas linha inferior (Material Design concept) */
+.form-group input, .form-group textarea {
+    width: 100%; 
+    padding: 15px 10px; 
+    background: transparent; 
+    border: none;
+    border-bottom: 1px solid var(--surface-light); 
+    color: var(--text-main);
+    font-family: var(--font-body); 
+    font-size: 1rem; 
+    transition: all 0.3s ease;
+}
+
+/* Feedback visual de foco para melhorar a acessibilidade (UX) */
+.form-group input:focus, .form-group textarea:focus { 
+    outline: none; 
+    border-bottom-color: var(--accent-color); 
+    background-color: rgba(255, 255, 255, 0.03); 
+}
+
+.form-group textarea { resize: vertical; min-height: 120px; }
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+footer { 
+    background-color: #0a0a0a; 
+    padding: 40px 50px; 
+    text-align: center; 
+    border-top: 1px solid var(--surface-light); 
+}
+footer p { color: var(--text-muted); font-size: 0.9rem; }
+footer .accent { color: var(--accent-color); font-family: var(--font-heading); font-size: 1.1rem; }
+
+/* ==========================================================================
+   ANIMAÇÕES GERAIS E KEYFRAMES
+   ========================================================================== */
+
+/* Classe base para elementos que surgirão na tela ao rolar (ver JS) */
+.reveal { 
+    opacity: 0; 
+    transform: translateY(50px); 
+    transition: all 0.8s ease-out; 
+}
+.reveal.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* Keyframe utilizado nos textos do cabeçalho */
+@keyframes fadeUp { 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVIDADE)
+   Adequa o layout para diferentes tamanhos de tela.
+   ========================================================================== */
+
+/* Telas médias (Tablets e Laptops pequenos) */
+@media (max-width: 900px) {
+    /* Transforma grids de 2 colunas em 1 coluna */
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-img img { box-shadow: 10px 10px 0px var(--surface-light); }
+    .stats { flex-direction: column; gap: 20px; text-align: center; }
+}
+
+/* Telas pequenas (Smartphones) */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 2.5rem; }
+    .section-padding { padding: 60px 20px; }
+    
+    nav { padding: 20px; }
+    nav.scrolled { padding: 15px 20px; }
+
+    /* Exibe o botão Hambúrguer */
+    .menu-toggle { display: flex; }
+
+    /* Estilos do Menu Mobile Overlay (Menu Lateral Escondido) */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Inicia 100% fora da tela à direita */
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(18, 18, 18, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column; /* Organiza os links verticalmente */
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1); /* Animação de entrada fluida */
+    }
+
+    /* Classe ativada via JS para mostrar o menu */
+    .nav-links.active { right: 0; }
+    .nav-links a { margin: 20px 0; font-size: 1.2rem; }
+
+    /* Animação do ícone Hambúrguer transformando em 'X' */
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg);
+        width: 32px;
+    }
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0; /* Esconde a linha do meio */
+        width: 0;
+    }
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg);
+        width: 32px;
+    }
+}
