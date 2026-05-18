@@ -324,6 +324,61 @@ nav.scrolled {
 .project-card:hover .project-info { transform: translateY(0); opacity: 1; } /* Exibe o texto */
 
 /* ==========================================================================
+   SEÇÃO: DEPOIMENTOS
+   ========================================================================== */
+.testimonials {
+    /* Utilizando a mesma cor de fundo padrão ou surface para contrastar suavemente */
+    background-color: var(--bg-color); 
+}
+
+.testimonials-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 30px; 
+}
+
+.testimonial-card {
+    background: var(--surface-color);
+    padding: 40px;
+    border-radius: 4px;
+    position: relative;
+    border-left: 3px solid var(--accent-color);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover { 
+    transform: translateY(-10px); 
+}
+
+.quote-icon {
+    font-size: 2rem;
+    color: var(--surface-light); /* Cor discreta para não roubar a atenção do texto */
+    margin-bottom: 20px;
+    display: block;
+}
+
+.testimonial-card p {
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+}
+
+.client-info h4 {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.client-info span {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
    SEÇÃO: CONTATO E FORMULÁRIO
    ========================================================================== */
 .contact { background-color: var(--surface-color); }
