@@ -73,8 +73,8 @@ const revealCallback = (entries, observer) => {
 
 // Configurações de precisão do observador
 const revealOptions = { 
-    threshold: 0.15, // A animação dispara quando 15% do elemento está visível
-    rootMargin: "0px 0px -50px 0px" // Reduz a área de acionamento em 50px do fundo (atrasa um pouco a entrada)
+    threshold: 0.05, // A animação dispara quando 5% do elemento está visível
+    rootMargin: "0px 0px 50px 0px" // Reduz a área de acionamento em 50px do fundo (atrasa um pouco a entrada)
 };
 
 // Instancia o IntersectionObserver com a nossa função e configurações
