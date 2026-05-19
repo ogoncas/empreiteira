@@ -56,8 +56,11 @@ function escutarBancoProjetos() {
                         </div>`;
                 });
             } else {
-                notasContidasHtml = '<p style="color: #555; font-size: 0.8rem;">Sem relatórios diários anexados.</p>';
+                notasContidasHtml = '<p style="color: #a5a5a5; font-size: 0.8rem;">Sem relatórios diários anexados.</p>';
             }
+
+            const custoFormatado = item.custos ? item.custos.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00';
+            const percFaltante = 100 - (item.progresso || 0);
 
             const card = document.createElement('div');
             card.className = 'project-card-dash';
@@ -66,10 +69,17 @@ function escutarBancoProjetos() {
                     <h3>${item.nome}</h3>
                     <span class="tag">${item.tipo} | Cliente: ${item.emailCliente || 'Não atribuído'}</span>
                 </div>
+                
+                <div class="info-extra" style="margin: 15px 0; font-size: 0.85rem; color: #eee; line-height: 1.7;">
+                    <p style="margin: 4px 0;"><strong style="color: #fff; opacity: 0.6;">Gerente:</strong> ${item.gerente || 'Não informado'}</p>
+                    <p style="margin: 4px 0;"><strong style="color: #fff; opacity: 0.6;">Fase Atual:</strong> ${item.processo || 'Não informado'}</p>
+                    <p style="margin: 4px 0;"><strong style="color: #fff; opacity: 0.6;">Custos:</strong> <span style="color: var(--accent-color); font-weight: 500;">${custoFormatado}</span></p>
+                </div>
+
                 <div class="progress-wrapper">
                     <div class="progress-info">
-                        <span>Avanço Físico</span>
-                        <span style="color: var(--accent-color); font-weight:600;">${item.progresso}%</span>
+                        <span>Avanço: <span style="color: var(--accent-color); font-weight:600;">${item.progresso}%</span></span>
+                        <span style="color: #ff6b6b; font-weight:600; font-size: 0.85rem;">Faltam: ${percFaltante}%</span>
                     </div>
                     <div class="progress-bar-bg">
                         <div class="progress-bar-fill" style="width: ${item.progresso}%;"></div>
@@ -78,7 +88,7 @@ function escutarBancoProjetos() {
                 <h4 style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; color: var(--text-muted);">Diário de Obras</h4>
                 <div class="notes-box">${notasContidasHtml}</div>
                 <div class="card-actions">
-                    <button class="btn-action-edit" data-id="${id}" data-email="${item.emailCliente || ''}"><i class="fa-solid fa-sliders"></i> Gerenciar</button>
+                    <button class="btn-action-edit" data-id="${id}" data-email="${item.emailCliente || ''}" data-processo="${item.processo || ''}" data-gerente="${item.gerente || ''}" data-custos="${item.custos || 0}" data-progresso="${item.progresso || 0}"><i class="fa-solid fa-sliders"></i> Gerenciar</button>
                     <button class="btn-action-del" data-id="${id}"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `;
@@ -94,20 +104,41 @@ projectForm.addEventListener('submit', async (e) => {
     const nomeVal = document.getElementById('proj-nome').value;
     const tipoVal = document.getElementById('proj-tipo').value;
     const emailClienteVal = document.getElementById('proj-email-cliente').value.trim().toLowerCase();
+    
+    const processoVal = document.getElementById('proj-processo').value.trim();
+    const gerenteVal = document.getElementById('proj-gerente').value.trim();
+    const custosVal = parseFloat(document.getElementById('proj-custos').value) || 0;
     const progressoVal = parseInt(document.getElementById('proj-progresso').value, 10);
     const novaNotaText = document.getElementById('proj-nota').value.trim();
 
     try {
         if (id) {
             const docRef = doc(db, "projetos", id);
-            const dadosAtualizados = { nome: nomeVal, tipo: tipoVal, emailCliente: emailClienteVal, progresso: progressoVal };
+            const dadosAtualizados = { 
+                nome: nomeVal, 
+                tipo: tipoVal, 
+                emailCliente: emailClienteVal, 
+                progresso: progressoVal,
+                processo: processoVal,
+                gerente: gerenteVal,
+                custos: custosVal
+            };
             if (novaNotaText !== "") {
                 const dataAtual = new Date().toLocaleDateString('pt-BR');
                 dadosAtualizados.anotacoes = arrayUnion(`${dataAtual} - ${novaNotaText}`);
             }
             await updateDoc(docRef, dadosAtualizados);
         } else {
-            const novoDocumento = { nome: nomeVal, tipo: tipoVal, emailCliente: emailClienteVal, progresso: progressoVal, anotacoes: [] };
+            const novoDocumento = { 
+                nome: nomeVal, 
+                tipo: tipoVal, 
+                emailCliente: emailClienteVal, 
+                progresso: progressoVal,
+                processo: processoVal,
+                gerente: gerenteVal,
+                custos: custosVal,
+                anotacoes: [] 
+            };
             if (novaNotaText !== "") {
                 const dataAtual = new Date().toLocaleDateString('pt-BR');
                 novoDocumento.anotacoes.push(`${dataAtual} - ${novaNotaText}`);
@@ -134,13 +165,22 @@ function vincularEventosCard() {
         btn.onclick = (e) => {
             const id = e.currentTarget.getAttribute('data-id');
             const email = e.currentTarget.getAttribute('data-email');
+            const processo = e.currentTarget.getAttribute('data-processo');
+            const gerente = e.currentTarget.getAttribute('data-gerente');
+            const custos = e.currentTarget.getAttribute('data-custos');
+            const progresso = e.currentTarget.getAttribute('data-progresso');
+            
             const cardPai = e.currentTarget.closest('.project-card-dash');
             
             document.getElementById('project-id').value = id;
             document.getElementById('proj-nome').value = cardPai.querySelector('h3').innerText;
             document.getElementById('proj-tipo').value = cardPai.querySelector('.tag').innerText.split(' | ')[0];
             document.getElementById('proj-email-cliente').value = email;
-            document.getElementById('proj-progresso').value = parseInt(cardPai.querySelector('.progress-info span:last-child').innerText, 10);
+            
+            document.getElementById('proj-processo').value = processo;
+            document.getElementById('proj-gerente').value = gerente;
+            document.getElementById('proj-custos').value = custos;
+            document.getElementById('proj-progresso').value = progresso;
             document.getElementById('proj-nota').value = '';
 
             modalTitle.innerText = "Atualizar Status da Obra";
