@@ -111,6 +111,23 @@ nav {
     transition: padding 0.3s ease;
 }
 
+.logo { 
+    font-family: var(--font-heading); 
+    font-size: 1.5rem; 
+    color: var(--accent-color); 
+    letter-spacing: 2px; 
+    z-index: 1001;
+    display: flex; 
+    align-items: center; 
+    gap: 5px;
+}
+
+/* Define o tamanho da logo */
+.logo-img {
+    height: 45px;
+    width: auto;
+}
+
 /* Classe dinâmica adicionada via JavaScript ao rolar a página */
 nav.scrolled { 
     padding: 15px 50px; 
