@@ -1,31 +1,31 @@
 /* ==========================================================================
    VARIÁVEIS GLOBAIS (Custom Properties)
-   Centralizam a paleta de cores e tipografia, facilitando futuras alterações.
    ========================================================================== */
 :root {
-    --bg-color: #121212;         /* Fundo escuro principal */
-    --surface-color: #1a1a1a;    /* Fundo secundário para seções alternadas */
-    --surface-light: #242424;    /* Bordas e divisores sutis */
-    --text-main: #f4f4f4;        /* Texto principal (claro) */
-    --text-muted: #a0a0a0;       /* Texto secundário/descrições (cinza) */
-    --accent-color: #d4af37;     /* Cor de destaque (dourado) */
+    --bg-color: #121212;
+    --surface-color: #1a1a1a;
+    --surface-light: #242424;
+    --text-main: #f4f4f4;
+    --text-muted: #a0a0a0;
+    --accent-color: #d4af37;
     
-    --font-heading: 'Playfair Display', serif; /* Fonte elegante para títulos */
-    --font-body: 'Montserrat', sans-serif;     /* Fonte moderna e limpa para parágrafos */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
 }
 
 /* ==========================================================================
    RESET CSS BASE
-   Remove o comportamento padrão dos navegadores para garantir uniformidade.
    ========================================================================== */
 * { 
     margin: 0; 
     padding: 0; 
-    box-sizing: border-box; /* O padding e a borda não aumentam o tamanho final do elemento */
+    box-sizing: border-box;
 }
 
 html { 
-    scroll-behavior: smooth; /* Permite a rolagem suave ao clicar nas âncoras do menu */
+    scroll-behavior: smooth;
+    /* UX: Evita que a barra de navegação fixa cubra os títulos das seções ao navegar pelo menu */
+    scroll-padding-top: 85px; 
 }
 
 body {
@@ -33,12 +33,11 @@ body {
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.6;
-    overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
+    overflow-x: hidden;
 }
 
 /* ==========================================================================
    ESTILOS DE ESTRUTURA GERAL E COMPONENTES
-   Classes reaproveitáveis ao longo do projeto.
    ========================================================================== */
 .section-padding { 
     padding: 100px 50px; 
@@ -74,25 +73,31 @@ body {
     font-size: 0.9rem;
     position: relative;
     overflow: hidden;
-    transition: color 0.4s ease;
+    transition: color 0.4s ease, background-color 0.4s ease;
     cursor: pointer;
     background: transparent;
+    /* UI: Força um empilhamento correto para o texto não sumir sob o fundo dourado */
+    z-index: 1; 
 }
 
 .btn::before {
     content: '';
     position: absolute;
     top: 0; 
-    left: -100%; /* Começa fora do botão à esquerda */
+    left: -100%;
     width: 100%; 
     height: 100%;
     background-color: var(--accent-color);
     transition: left 0.4s ease;
-    z-index: -1; /* Fica atrás do texto do botão */
+    z-index: -1; /* Fica logo atrás do texto */
 }
 
-.btn:hover { color: var(--bg-color); }
-.btn:hover::before { left: 0; } /* Desliza a cor para dentro do botão no hover */
+.btn:hover { 
+    color: var(--bg-color); 
+}
+.btn:hover::before { 
+    left: 0; 
+}
 
 /* ==========================================================================
    NAVEGAÇÃO (HEADER & MENU)
@@ -106,8 +111,8 @@ nav {
     justify-content: space-between; 
     align-items: center;
     background: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px); /* Efeito de vidro fosco (Glassmorphism) */
-    z-index: 1000; /* Garante que fique acima de todos os outros elementos */
+    backdrop-filter: blur(10px);
+    z-index: 1000;
     transition: padding 0.3s ease;
 }
 
@@ -119,30 +124,20 @@ nav {
     z-index: 1001;
     display: flex; 
     align-items: center; 
-    gap: 5px;
+    gap: 10px;
 }
 
-/* Define o tamanho da logo */
 .logo-img {
     height: 45px;
     width: auto;
 }
 
-/* Classe dinâmica adicionada via JavaScript ao rolar a página */
 nav.scrolled { 
     padding: 15px 50px; 
     box-shadow: 0 2px 20px rgba(0,0,0,0.5); 
 }
 
-.logo { 
-    font-family: var(--font-heading); 
-    font-size: 1.5rem; 
-    color: var(--accent-color); 
-    letter-spacing: 2px; 
-    z-index: 1001; /* Mantém a logo acima do overlay do menu mobile */
-}
-
-/* Ícone do Menu Hambúrguer - Oculto por padrão no Desktop */
+/* Ícone do Menu Hambúrguer */
 .menu-toggle {
     display: none; 
     flex-direction: column;
@@ -153,7 +148,12 @@ nav.scrolled {
     z-index: 1001; 
 }
 
-/* Linhas do menu hambúrguer */
+/* UI/Acessibilidade: Feedback visual claro quando focado via teclado */
+.menu-toggle:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 5px;
+}
+
 .menu-toggle span {
     display: block;
     height: 2px;
@@ -161,7 +161,7 @@ nav.scrolled {
     background-color: var(--accent-color);
     border-radius: 2px;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: left center; /* Define o eixo da animação do 'X' */
+    transform-origin: left center;
 }
 
 .nav-links {
@@ -169,7 +169,6 @@ nav.scrolled {
     align-items: center;
 }
 
-/* Estilo dos links com sublinhado animado */
 .nav-links a {
     color: var(--text-main); 
     text-decoration: none;
@@ -184,7 +183,7 @@ nav.scrolled {
 .nav-links a::after {
     content: ''; 
     position: absolute;
-    width: 0; /* Começa invisível */
+    width: 0; 
     height: 1px;
     bottom: -5px; 
     left: 0;
@@ -193,10 +192,10 @@ nav.scrolled {
 }
 
 .nav-links a:hover { color: var(--accent-color); }
-.nav-links a:hover::after { width: 100%; } /* Expande o sublinhado ao passar o mouse */
+.nav-links a:hover::after { width: 100%; }
 
 /* ==========================================================================
-   SEÇÃO HERO (PRIMEIRA DOBRA)
+   SEÇÃO HERO
    ========================================================================== */
 .hero {
     height: 100vh; 
@@ -204,12 +203,10 @@ nav.scrolled {
     align-items: center; 
     justify-content: center; 
     text-align: center;
-    /* Fundo com sobreposição de gradiente escuro para garantir legibilidade do texto */
-    background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+    background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0') center/cover;
     padding: 0 20px;
 }
 
-/* Animações de entrada controladas por Keyframes (veja no final do arquivo) */
 .hero-content h1 {
     font-family: var(--font-heading); 
     font-size: 4rem; 
@@ -239,7 +236,7 @@ nav.scrolled {
    ========================================================================== */
 .about-grid { 
     display: grid; 
-    grid-template-columns: 1fr 1fr; /* Divide em duas colunas iguais */
+    grid-template-columns: 1fr 1fr; 
     gap: 60px; 
     align-items: center; 
 }
@@ -248,7 +245,6 @@ nav.scrolled {
 .about-text h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 20px; color: var(--text-main); font-weight: 400; }
 .about-text p { color: var(--text-muted); margin-bottom: 20px; }
 
-/* Grid flexível para exibir os números de estatísticas alinhados */
 .stats { 
     display: flex; 
     gap: 40px; 
@@ -259,7 +255,6 @@ nav.scrolled {
 .stat-item h4 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--accent-color); }
 .stat-item span { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
 
-/* Sombra sólida geométrica aplicada à imagem */
 .about-img img { 
     width: 100%; 
     border-radius: 4px; 
@@ -270,8 +265,6 @@ nav.scrolled {
    SEÇÃO: SERVIÇOS
    ========================================================================== */
 .services { background-color: var(--surface-color); }
-
-/* Grid dinâmico: Ajusta as colunas automaticamente conforme o espaço disponível */
 .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
 .service-card {
@@ -282,7 +275,6 @@ nav.scrolled {
     transition: all 0.3s ease;
 }
 
-/* Efeito de elevação do card ao passar o mouse */
 .service-card:hover { 
     transform: translateY(-10px); 
     border-bottom: 3px solid var(--accent-color); 
@@ -320,7 +312,6 @@ nav.scrolled {
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 }
 
-/* Overlay de informações que sobe ao dar hover na imagem */
 .project-info {
     position: absolute; 
     bottom: 0; 
@@ -336,23 +327,14 @@ nav.scrolled {
 .project-info h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 5px; }
 .project-info p { color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
 
-/* Efeito Hover do Card Inteiro */
-.project-card:hover .project-img { transform: scale(1.08); } /* Zoom lento na imagem */
-.project-card:hover .project-info { transform: translateY(0); opacity: 1; } /* Exibe o texto */
+.project-card:hover .project-img { transform: scale(1.08); }
+.project-card:hover .project-info { transform: translateY(0); opacity: 1; }
 
 /* ==========================================================================
    SEÇÃO: DEPOIMENTOS
    ========================================================================== */
-.testimonials {
-    /* Utilizando a mesma cor de fundo padrão ou surface para contrastar suavemente */
-    background-color: var(--bg-color); 
-}
-
-.testimonials-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-    gap: 30px; 
-}
+.testimonials { background-color: var(--bg-color); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
 .testimonial-card {
     background: var(--surface-color);
@@ -363,13 +345,11 @@ nav.scrolled {
     transition: transform 0.3s ease;
 }
 
-.testimonial-card:hover { 
-    transform: translateY(-10px); 
-}
+.testimonial-card:hover { transform: translateY(-10px); }
 
 .quote-icon {
     font-size: 2rem;
-    color: var(--surface-light); /* Cor discreta para não roubar a atenção do texto */
+    color: var(--surface-light);
     margin-bottom: 20px;
     display: block;
 }
@@ -409,11 +389,9 @@ nav.scrolled {
 .info-item h4 { color: var(--text-main); font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
 .info-item p { color: var(--text-muted); }
 
-/* Layout do Formulário */
 .contact-form { display: flex; flex-direction: column; gap: 25px; }
 .form-group { position: relative; }
 
-/* Estilização limpa dos inputs: apenas linha inferior (Material Design concept) */
 .form-group input, .form-group textarea {
     width: 100%; 
     padding: 15px 10px; 
@@ -426,7 +404,6 @@ nav.scrolled {
     transition: all 0.3s ease;
 }
 
-/* Feedback visual de foco para melhorar a acessibilidade (UX) */
 .form-group input:focus, .form-group textarea:focus { 
     outline: none; 
     border-bottom-color: var(--accent-color); 
@@ -450,8 +427,6 @@ footer .accent { color: var(--accent-color); font-family: var(--font-heading); f
 /* ==========================================================================
    ANIMAÇÕES GERAIS E KEYFRAMES
    ========================================================================== */
-
-/* Classe base para elementos que surgirão na tela ao rolar (ver JS) */
 .reveal { 
     opacity: 0; 
     transform: translateY(50px); 
@@ -462,25 +437,19 @@ footer .accent { color: var(--accent-color); font-family: var(--font-heading); f
     transform: translateY(0); 
 }
 
-/* Keyframe utilizado nos textos do cabeçalho */
 @keyframes fadeUp { 
     to { opacity: 1; transform: translateY(0); } 
 }
 
 /* ==========================================================================
    MEDIA QUERIES (RESPONSIVIDADE)
-   Adequa o layout para diferentes tamanhos de tela.
    ========================================================================== */
-
-/* Telas médias (Tablets e Laptops pequenos) */
 @media (max-width: 900px) {
-    /* Transforma grids de 2 colunas em 1 coluna */
     .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
     .about-img img { box-shadow: 10px 10px 0px var(--surface-light); }
     .stats { flex-direction: column; gap: 20px; text-align: center; }
 }
 
-/* Telas pequenas (Smartphones) */
 @media (max-width: 768px) {
     .hero-content h1 { font-size: 2.5rem; }
     .section-padding { padding: 60px 20px; }
@@ -488,35 +457,31 @@ footer .accent { color: var(--accent-color); font-family: var(--font-heading); f
     nav { padding: 20px; }
     nav.scrolled { padding: 15px 20px; }
 
-    /* Exibe o botão Hambúrguer */
     .menu-toggle { display: flex; }
 
-    /* Estilos do Menu Mobile Overlay (Menu Lateral Escondido) */
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%; /* Inicia 100% fora da tela à direita */
+        right: -100%; 
         width: 100%;
         height: 100vh;
         background-color: rgba(18, 18, 18, 0.98);
         backdrop-filter: blur(10px);
-        flex-direction: column; /* Organiza os links verticalmente */
+        flex-direction: column; 
         justify-content: center;
         align-items: center;
-        transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1); /* Animação de entrada fluida */
+        transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
     }
 
-    /* Classe ativada via JS para mostrar o menu */
     .nav-links.active { right: 0; }
     .nav-links a { margin: 20px 0; font-size: 1.2rem; }
 
-    /* Animação do ícone Hambúrguer transformando em 'X' */
     .menu-toggle.active span:nth-child(1) {
         transform: rotate(45deg);
         width: 32px;
     }
     .menu-toggle.active span:nth-child(2) {
-        opacity: 0; /* Esconde a linha do meio */
+        opacity: 0; 
         width: 0;
     }
     .menu-toggle.active span:nth-child(3) {
@@ -525,13 +490,9 @@ footer .accent { color: var(--accent-color); font-family: var(--font-heading); f
     }
 
     .hero {
-        /* Usa uma unidade moderna (Small Viewport Height) para evitar que a imagem 
-           pule quando a barra de endereço do navegador do celular sumir/aparecer */
         height: 100svh; 
         min-height: 100vh;
         background-position: center center;
-        background-attachment: scroll; /* Previne bugs visuais no iPhone/iOS */
+        background-attachment: scroll; 
     }
-    .hero-content h1 { font-size: 2.5rem; }
-    .section-padding { padding: 60px 20px; }
 }

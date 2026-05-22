@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cortes Lima Engenharia | Empreiteira</title>
-    
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png?v=2">
+    <link rel="shortcut icon" href="./logo.png">
+    <link rel="apple-touch-icon" href="./logo.png?v=3">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -22,7 +25,7 @@
             Cortes Lima
         </div>
         
-        <div class="menu-toggle" id="mobile-menu">
+        <div class="menu-toggle" id="mobile-menu" role="button" aria-label="Abrir menu de navegação" aria-expanded="false" tabindex="0">
             <span></span>
             <span></span>
             <span></span>
@@ -72,7 +75,7 @@
             </div>
             
             <div class="about-img reveal" style="transition-delay: 0.2s;">
-                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Engenheiros na obra inspecionando o projeto">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Engenheiros na obra inspecionando o projeto" loading="lazy">
             </div>
         </div>
     </section>
@@ -106,21 +109,21 @@
         
         <div class="projects-grid">
             <div class="project-card reveal">
-                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vista externa da Torre Horizonte" class="project-img">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vista externa da Torre Horizonte" class="project-img" loading="lazy">
                 <div class="project-info">
                     <h3>Torre Horizonte</h3>
                     <p>Edificação Comercial - 45 Andares</p>
                 </div>
             </div>
             <div class="project-card reveal" style="transition-delay: 0.2s;">
-                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Interior do Complexo Industrial Nexus" class="project-img">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Interior do Complexo Industrial Nexus" class="project-img" loading="lazy">
                 <div class="project-info">
                     <h3>Complexo Industrial Nexus</h3>
                     <p>Infraestrutura Logística</p>
                 </div>
             </div>
             <div class="project-card reveal" style="transition-delay: 0.4s;">
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Viaduto Metropolitano recém construído" class="project-img">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Viaduto Metropolitano recém construído" class="project-img" loading="lazy">
                 <div class="project-info">
                     <h3>Viaduto Metropolitano</h3>
                     <p>Obra de Arte Especial</p>
@@ -185,19 +188,18 @@
             
             <form class="contact-form reveal" style="transition-delay: 0.2s;">
                 <div class="form-group">
-                    <input type="text" placeholder="Nome da Empresa / Contato" required>
+                    <input type="text" placeholder="Nome da Empresa / Contato" aria-label="Nome da Empresa ou do Contato" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" placeholder="E-mail Profissional" required>
+                    <input type="email" placeholder="E-mail Profissional" aria-label="E-mail Profissional" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Assunto (Ex: Cotação para Galpão Logístico)" required>
+                    <input type="text" placeholder="Assunto (Ex: Cotação para Galpão Logístico)" aria-label="Assunto da Mensagem" required>
                 </div>
                 <div class="form-group">
-                    <textarea placeholder="Detalhes do projeto ou mensagem..." required></textarea>
+                    <textarea placeholder="Detalhes do projeto ou mensagem..." aria-label="Detalhes do projeto ou mensagem" required></textarea>
                 </div>
-                <button type="button" class="btn" style="align-self: flex-start;">Enviar Mensagem</button>
-                
+                <button type="submit" class="btn" style="align-self: flex-start;">Enviar Mensagem</button>
             </form>
         </div>
     </section>
